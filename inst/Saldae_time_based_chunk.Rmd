@@ -1,0 +1,44 @@
+
+`r names(params$sald_explor_chart)[[VARIABLE_INDEX]]`
+=======================================================================
+
+
+
+Column {.tabset data-width=600}
+-----------------------------------------------------------------------
+
+### Sales Forecast
+
+```{r, warning=FALSE,fig.height=6}
+params$sald_explor_chart[[VARIABLE_INDEX]]
+
+```
+
+
+### Sales by State
+
+```{r, warning=FALSE,fig.height=4}
+
+DT::datatable(params$sald_predict_chart[[VARIABLE_INDEX]],
+              extensions = c('Buttons','Scroller'), options = list(
+                deferRender = TRUE,
+              scrollY = 200,
+              scroller = TRUE,
+              dom = 'Bfrtip',
+    buttons = c('copy', 'csv', 'excel', 'pdf', 'print')
+  )
+)
+# reactable::reactable(params$sald_predict_chart[[VARIABLE_INDEX]],pagination = FALSE, highlight = TRUE, height = 200)
+
+```
+
+Column {.tabset data-width=400}
+-----------------------------------------------------------------------
+
+### Sales by Category
+
+```{r, warning=FALSE}
+reactable::reactable(params$sald_predict_chart[[VARIABLE_INDEX]],pagination = FALSE, highlight = TRUE, height = 400)
+```
+
+### Best Sellers

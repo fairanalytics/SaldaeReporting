@@ -1,0 +1,60 @@
+
+`r names(params$sald_explor_chart)[[VARIABLE_INDEX]]`
+=======================================================================
+
+Row {data-width=200}
+-----------------------------------------------------------------------
+
+
+### `r paste(names(params$sald_explor_chart)[[VARIABLE_INDEX]] ,":",params$sald_predict_values$key_metric)`
+
+
+```{r}
+my_key_figure <- params$sald_predict_values$key_figures[[VARIABLE_INDEX]]
+flexdashboard::valueBox(my_key_figure,color = "brown", icon = "fa-euro-sign")
+```
+
+### Summary {data-commentary-height=100}
+
+```{r,warning=FALSE,echo=FALSE}
+h5(params$sald_predict_comment[[VARIABLE_INDEX]])
+```
+
+***
+
+Row {.tabset}
+-----------------------------------------------------------------------
+
+### Forecast Chart
+
+```{r, warning=FALSE,fig.height=6,echo=FALSE}
+params$sald_explor_chart[[VARIABLE_INDEX]]
+
+```
+
+
+### Forecast Table
+
+```{r, warning=FALSE,fig.height=4,echo=FALSE}
+
+DT::datatable(params$sald_predict_chart[[VARIABLE_INDEX]],
+              extensions = c('Buttons','Scroller'), options = list(
+                deferRender = TRUE,
+              scrollY = 400,
+              scroller = TRUE,
+              dom = 'Bfrtip',
+    buttons = c('copy', 'csv', 'excel', 'pdf', 'print')
+  )
+)
+```
+
+### Anomalies 
+
+```{r ,warning=FALSE,fig.height=4,message=FALSE,echo=FALSE}
+tisefka <- params$sald_tisefka%>%select(date,names(params$sald_explor_chart)[VARIABLE_INDEX])
+tisefka2 <<- tisefka
+tisefka%>%
+  SaldaeDataExplorer::anomaly_detection_yiwen()%>%
+  SaldaeDataExplorer::SA_anomaly_charter(target_variable = names(params$sald_explor_chart)[VARIABLE_INDEX])
+```
+

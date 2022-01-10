@@ -1,0 +1,24 @@
+name: "saldae-reports"
+navbar:
+  title: "Saldae Analytics Reports"
+  left:
+    - text: "Home"
+      href: index.html
+    - text: "About"
+      href: about.html
+  right:
+    - icon: fa-question fa-lg
+      href: https://www.fairanalytics.net/
+    - icon: fa-envelope fa-lg
+      href: mailto:fairanalytics@outlook.com
+    - icon: fa-github fa-lg
+      href: https://github.com/fairanalytics/
+
+output:
+    html_document:
+#    self_contained: no
+#    theme: united
+#    highlight: monochrome
+      include:
+        after_body: footer.html
+      css: bootstrap_minty.css

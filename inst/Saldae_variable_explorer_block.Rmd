@@ -1,0 +1,24 @@
+# AIRCODE {data-navmenu="Airport Overviews"}
+
+##
+
+###
+
+```{r warning=FALSE}
+airportcode <- "AIRCODE"
+
+plot(rnorm(100,nchar(airportcode),4),type="l",col = nchar(airportcode))
+```
+
+###
+```{r warning=FALSE}
+ggplot2::qplot(rnorm(100,nchar(airportcode),4))
+```
+
+###
+```{r warning=FALSE}
+ggplot2::qplot(cars$speed)
+
+```
+
+## {.tabset}

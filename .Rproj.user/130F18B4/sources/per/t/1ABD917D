@@ -1,0 +1,24 @@
+{
+    "id": "1ABD917D",
+    "path": "~/Saldae Platform/SaldaeReporting/R/reporting_pool.R",
+    "project_path": "R/reporting_pool.R",
+    "type": "r_source",
+    "hash": "2449387544",
+    "contents": "",
+    "dirty": false,
+    "created": 1640190047293.0,
+    "source_on_save": false,
+    "relative_order": 4,
+    "properties": {
+        "cursorPosition": "142,86",
+        "scrollLine": "0"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 1640202955,
+    "encoding": "UTF-8",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1640202955832,
+    "read_only": false,
+    "read_only_alternatives": []
+}

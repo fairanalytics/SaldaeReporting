@@ -1,0 +1,145 @@
+
+mod_sekned_yiwet_tisefka <- function(tisefka = NULL,variable_inu=NULL,graph_type="scatter"){
+  y <- list(title = variable_inu)
+  tisefka%>%plotly::plot_ly(x = ~date,y = ~base::get(variable_inu),name =variable_inu ,type = graph_type) %>%
+    plotly::layout(yaxis = y)%>%plotly::config(displaylogo = F)%>%plotly::partial_bundle()
+}
+#-------------------------------
+#' Saldae dashboard layout generator
+#' @param page_layout_configs layout config information of a single page /section
+#' @author Farid Azouaou
+#' @return page layout information
+.single_page_layout_generator <- function(page_layout_configs  = NULL){
+  #---------------------
+  print("hello")
+  #---------------------
+}
+
+#-------------------------------
+#' Saldae dashboard layout generator
+#' @author Farid Azouaou
+#' @param layout_configs t.b.d
+#' @return list of layout configurations
+#'
+SALDAE_layout_generator <- function(layout_configs  = NULL){
+  #---------------------
+
+
+
+  #---------------------
+
+}
+
+#' Saldae dashboard header generator
+#' @param dash_aqerruy title ,author ,subtitle, Date(time),document type,theme
+#' @author Farid Azouaou
+#' @return YAML file containing header information
+dash_aqerruy_generator <- function(dash_aqerruy = NULL){
+
+
+  if(dash_aqerruy$output=="html_document"){
+
+    dash_aqerruy$output <- list("html_document" = list("toc"= TRUE,
+                                                       "mathjax" = NULL,
+                                                        "toc_float"=TRUE))
+  }else if(dash_aqerruy$output=="html_pretty_document"){
+    dash_aqerruy$output <- list("prettydoc::html_pretty" = list("theme"= "cayman",
+                                                                "highlight"="github",
+                                                                "toc" = TRUE,
+                                                                "mathjax" = NULL,
+                                                                "number_sections" = TRUE,
+                                                                "fig_caption"= TRUE))
+  }else if(dash_aqerruy$output=="powerpoint_document"){
+    dash_aqerruy$output <- list("ioslides_presentation" = list("incremental" = TRUE,
+                                                               "widescreen" = TRUE,
+                                                               "logo" = "saldae_logo.png"))
+  }else if(dash_aqerruy$output=="presentation_document"){
+    dash_aqerruy$output <- list("slidy_presentation" = list("duration" = 10))
+  }else{
+    dash_aqerruy$output <- list("flexdashboard::flex_dashboard" = list("orientation"= "columns",
+                                                                          "social"=  "menu",
+                                                                          "theme"= "bootstrap",
+                                                                          "mathjax" = NULL,
+                                                                          # "logo" = "favicon.ico",
+                                                                          "favicon" = "saldae_logo.png",
+                                                                          "source_code"= "embed"))
+  }
+  dash_aqerruy_yml <- heddlr::create_yaml_header(dash_aqerruy)
+  return(dash_aqerruy_yml)
+}
+
+
+
+#' Saldae Reporting Engine: body part generator
+#' @author Farid Azouaou
+#' @description generates body part of rmarkdon object including layout and content
+#' @param dash_params  dashboard parameters information
+#' @param dash_ul  dashboard body information
+#' @param dash_layout dashboard layout object
+#' @return YAML file containing the body part of report
+
+dash_ul_generator <- function(dash_ul = NULL,dash_params = NULL,report_output = NULL){
+  #---------------
+
+
+
+  aceqquf_file_name <- paste0("./reporting/Saldae_base_chunk_",gsub("_document","",report_output),".Rmd")
+
+  Saldae_rmd  <- heddlr::import_draft(
+    "navbar_menu"       = paste0("./reporting/Saldae_reporting_menu_",gsub("_document","",report_output),".Rmd"),
+    "variable_explorer" = "./reporting/Saldae_variable_explorer_block.Rmd",
+    "time_based"        = aceqquf_file_name
+  )
+
+
+  dashboard_body <- purrr::map(.x = 1:length(dash_params), ~heddlr::heddle(data = .x,Saldae_rmd$time_based,"VARIABLE_INDEX") )
+
+  dashboard_body <- heddlr::make_template(Saldae_rmd$navbar_menu, dashboard_body)
+  return(dashboard_body)
+  #---------------
+}
+
+#' Saldae Reporting Engine
+#' @description a module which generate dynamic and customizable reports
+#' @param dash_aqerruy  dashboard header information
+#' @param dash_ul  dashboard body information
+#' @param dash_adhar dashboard footer
+#' @return I DONT KNOW
+#' @export
+SALDAE_reporting_engine <- function(dash_aqerruy = NULL,dash_asezwer= NULL,dash_ul = NULL, tisefka = NULL,output_file=NULL,dash_adhar = NULL, publish_report = FALSE){
+  #-----------------------------------------
+  # library(ggplot2)
+  # target_variables<- colnames(economics)[2:5]
+  print("da daghen")
+
+  target_variables <- names(dash_ul$analytics_tisefka)
+
+  # sald_predict_chart <- purrr::map(target_variables ,~mod_sekned_yiwet_tisefka(tisefka = economics,variable_inu = .x,graph_type = "box"))%>%
+  #   stats::setNames(target_variables)
+  #--- generate dashboard header YAML object
+  dash_aqerruy_yml <- dash_aqerruy_generator(dash_aqerruy = dash_aqerruy)
+  #--- generate dashboard body YAML object
+  dash_ul_yml      <- SaldaeReporting:::dash_ul_generator(dash_params = target_variables,dash_ul=dash_ul$analytics_tisefka,report_output = dash_aqerruy$output)
+
+
+
+
+  heddlr::make_template(dash_aqerruy_yml, dash_ul_yml) %>%
+    heddlr::export_template("./reporting/Saldae_main_report.Rmd")
+
+#----- render and generate report
+  output <- rmarkdown::render(input                  =  "./reporting/Saldae_main_report.Rmd",
+                              output_file            =  output_file,
+                              params                 =  heddlr::provide_parameters(
+                                sald_tisefka         =  dash_ul$tisefka,
+                                sald_explor_chart    =  dash_ul$analytics_plots,
+                                sald_predict_chart   =  dash_ul$analytics_tisefka,
+                                sald_predict_comment =  dash_ul$analytics_awal,
+                                sald_predict_values  =  dash_ul$analytics_key_figures,
+                                sald_report_asezwer  =  dash_asezwer
+                              ))
+  # publish report into github pages
+  if(publish_report == TRUE) saldae_publihser_f(target_report = paste0(output_file,".html"))
+  "./reporting/"%>%list.files(include.dirs = FALSE,full.names = TRUE, pattern = ".html")%>%file.remove()
+}
+
