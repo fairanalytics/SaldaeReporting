@@ -33,9 +33,9 @@ saldae_publihser_f <- function(target_report = "Saldae_main_report.html", github
     passphrase = Sys.getenv("SSH_KEY")
   )
   git2r::fetch(repo = local_repo, name = "origin", credentials = my_ssh_key)
-
+  # git2r::pull(repo = ".", credentials = my_ssh_key)
   git2r::push(object = local_repo , name = "origin", "refs/heads/main",
-              credentials  = my_ssh_key, set_upstream = TRUE, force = TRUE)
+              credentials  = my_ssh_key, set_upstream = TRUE)
 
 }
 #' Generate or Update publisher(Web site)

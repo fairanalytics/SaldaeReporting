@@ -1,6 +1,13 @@
 name: "saldae-reports"
+title: "Saldae Analytics Reports"
+repository_url: https://fairanalytics.github.io/saldae_dashboard/
+creative_commons: CC BY-SA
+favicon: images/logo/favicon.ico
 navbar:
-  title: "Saldae Analytics Reports"
+  logo:
+    image: images/logo/log_amaynut.png
+    href: https://www.fairanalytics.net/
+  search: true
   left:
     - text: "Home"
       href: index.html
@@ -15,10 +22,18 @@ navbar:
       href: https://github.com/fairanalytics/
 
 output:
-    html_document:
+    distill::distill_article:
 #    self_contained: no
 #    theme: united
 #    highlight: monochrome
+      toc: true
       include:
         after_body: footer.html
-      css: bootstrap_minty.css
+      # css: bootstrap_minty.css
+cookie_consent:
+  style: simple
+  type: express
+  palette: light
+  lang: en
+  cookies_policy: url
+preview: images/logo/log_amaynut.png
